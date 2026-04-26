@@ -4,21 +4,9 @@ const dotenv = require("dotenv");
 
 dotenv.config({ path: "./config.env" });
 
-(function warnIfS3UploadEnvIncomplete() {
-  const bucket = process.env.S3_BUCKET_NAME;
-  const region = process.env.AWS_REGION || process.env.S3_REGION;
-  if (!bucket || !region) {
-    console.warn(
-      "[S3] Set S3_BUCKET_NAME and AWS_REGION (or S3_REGION) in config.env for file uploads."
-    );
-  }
-})();
-
 const { connectDB } = require("./src/config/dbConnection.js");
 const cors = require("cors");
 const routes = require("./src/routes/index.js");
-const path = require("path");
-const { ensureUploadDir } = require("./src/utils/localUpload.util");
 const app = express();
 const port = process.env.PORT || 2000;
 const server = http.createServer(app);
@@ -49,10 +37,6 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.get('/', (req, res) => {
   res.send('Hello World! Project is running');
 });
-
-// Local uploads (required by assignment)
-ensureUploadDir();
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectDB()
   .catch(() => {

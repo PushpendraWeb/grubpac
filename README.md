@@ -69,7 +69,7 @@ All URLs use the mounted prefixes from `src/routes/index.js`:
 ## Uploads
 
 ### Local uploads (default)
-- Uploaded files are served from: `GET /uploads/<filename>`
+- Files are written under the project `uploads/` directory (the app does **not** expose `GET /uploads/...` static hosting).
 - Upload endpoint: `POST /api/file_uploader/upload-single` (multipart/form-data with field `file`)
 
 ### S3 uploads (optional)
@@ -174,7 +174,7 @@ Storage strategy
   - Env config in `config.env`:
     - `S3_BUCKET_NAME`, `AWS_REGION`, `S3_ALLOWED_MIME_TYPES`, `S3_MAX_FILE_MB`, etc.
 Local upload serving
-- Server exposes local uploads at `GET /uploads/<filename>` via Express static middleware.
+- Local files are stored on disk; serve them via your own reverse proxy or re-add `express.static` if you need public URLs.
 
 Upload response shape (single upload)
 - Return:
