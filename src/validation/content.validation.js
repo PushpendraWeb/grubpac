@@ -16,8 +16,8 @@ const createBodySchema = Joi.object({
   file_url: Joi.string().allow(null, "").optional(),
   file_type: Joi.string().trim().max(45).allow(null, "").optional(),
   file_size: Joi.number().optional(),
-  start_time: Joi.alternatives().try(Joi.date(), Joi.string().isoDate()).allow(null).optional(),
-  end_time: Joi.alternatives().try(Joi.date(), Joi.string().isoDate()).allow(null).optional(),
+  start_time: Joi.alternatives().try(Joi.date(), Joi.string().isoDate()).required(),
+  end_time: Joi.alternatives().try(Joi.date(), Joi.string().isoDate()).required(),
   status: Joi.string()
     .valid(...contentStatusValues)
     .optional(),

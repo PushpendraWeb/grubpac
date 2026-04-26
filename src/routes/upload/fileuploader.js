@@ -71,12 +71,7 @@ function runLocalUpload(multerMethod) {
 }
 
 
-// Upload Single
-// - Local storage is REQUIRED (default)
-// - S3 is BONUS (enabled only when S3_BUCKET_NAME + AWS_REGION are set)
-router.post(
-  '/upload-single',
-  (req, res, next) => {
+router.post('/upload',  (req, res, next) => {
     const runner = isS3Configured() ? runS3Upload : runLocalUpload;
     return runner((upload) => upload.single('file'))(req, res, next);
   },

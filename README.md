@@ -21,6 +21,10 @@ Update these values in `config.env` before starting:
 - **DB_HOST / DB_PORT / DB_USER / DB_PASSWORD / DB_NAME**
 - **JWT_SECRET**
 
+Database note:
+- This project **authenticates** to MySQL on startup but does **not** auto-migrate or auto-create tables.
+- Make sure the database + tables exist to match the Sequelize models in `src/models/`.
+
 ### Start the server
 ```bash
 npm run dev
@@ -35,6 +39,46 @@ npm start
 Server health check:
 - `GET /` → `Hello World! Project is running`
 - API base URL (default): `http://localhost:2000`
+
+## API Usage (quick)
+
+### 1) Login (get token)
+`POST /api/auth/login`
+
+Send JSON:
+- `email` (required)
+- `password` (required)
+
+Then use the returned token as:
+- `Authorization: Bearer <token>`
+
+### 2) Call secured endpoints
+Examples of secured routes:
+- `POST /api/content/create`
+- `POST /api/content_slots/create`
+- `POST /api/content_schedule/create`
+- `PATCH /api/approval/content/:id/approve` (principal only)
+
+### 3) Public (no JWT) broadcasting endpoint
+- `GET /api/content/live/:teacherId`
+- Optional query: `?subject=maths`
+
+## Uploaded Content Lifecycle (important)
+
+Content Lifecycle
+- uploaded → pending → approved / rejected
+- If rejected → rejection reason is visible
+- If approved → content will be shown only within the teacher-defined `start_time` and `end_time`
+
+Important Behavior (teacher controls scheduling)
+- Without `start_time` / `end_time` → content is **not active**
+- Within time window → eligible for rotation
+- Outside time window → not shown
+
+Even after approval, content is displayed only when it is scheduled by the teacher and falls within the active time window.
+
+Public Broadcasting Flow
+- Students hit a teacher-specific public endpoint: `GET /api/content/live/:teacherId`
 
 ## Postman (Collection + Environment)
 
@@ -161,7 +205,7 @@ Required fields for content upload
 
 Optional fields
 - Description
-- start_time, end_time
+- start_time, end_time (required for broadcasting / live rotation)
 - rotation duration (minutes)
 
 Storage strategy
@@ -248,7 +292,7 @@ Teacher-defined start_time/end_time behavior
 6) Public Broadcasting API Rules + Edge Cases
 ---------------------------------------------
 Endpoints (examples)
-- GET /content/live/teacher-:teacherId
+- GET /api/content/live/teacher-:teacherId
 - Optional query: ?subject=maths
 
 Response rules

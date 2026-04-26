@@ -11,10 +11,7 @@ const {
 const router = express.Router();
 
 router.get("/getAll", controller.getAll);
-// Public broadcasting API (no JWT): returns currently active approved content for teacher
-// Optional: ?subject=maths
 router.get("/live/:teacherId", controller.liveByTeacher);
-// Alias to match spec examples: /content/live/teacher-1
 router.get("/live/teacher-:teacherId", controller.liveByTeacher);
 router.get("/getById/:id", auth, validate("params", idParamSchema), controller.getById);
 router.post("/create", auth, validate("body", createBodySchema), controller.create);

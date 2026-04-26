@@ -11,20 +11,9 @@ const {
 const router = express.Router();
 
 router.get("/getAll", controller.getAll);
-router.get(
-  "/getById/:id",
-  auth,
-  validate("params", idParamSchema),
-  controller.getById
-);
+router.get("/getById/:id", auth, validate("params", idParamSchema), controller.getById);
 router.post("/create", auth, validate("body", createBodySchema), controller.create);
-router.put(
-  "/update/:id",
-  auth,
-  validate("params", idParamSchema),
-  validate("body", updateBodySchema),
-  controller.update
-);
+router.put("/update/:id", auth, validate("params", idParamSchema), validate("body", updateBodySchema), controller.update);
 router.delete("/delete/:id", auth, validate("params", idParamSchema), controller.remove);
 
 module.exports = router;
