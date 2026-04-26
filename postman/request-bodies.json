@@ -1,0 +1,81 @@
+{
+  "auth": {
+    "login": {
+      "email": "admin@example.com",
+      "password": "password123"
+    },
+    "forgotPassword": {
+      "email": "user@example.com"
+    },
+    "resetPassword": {
+      "resetToken": "<token>",
+      "newPassword": "newPassword123"
+    },
+    "changePassword": {
+      "oldPassword": "password123",
+      "newPassword": "newPassword123"
+    }
+  },
+  "roles": {
+    "create": {
+      "role_name": "teacher",
+      "status": 1
+    },
+    "update": {
+      "role_name": "principal",
+      "status": 1
+    }
+  },
+  "users": {
+    "create": {
+      "name": "Test User",
+      "email": "test.user@example.com",
+      "password": "password123",
+      "role_id": 1
+    },
+    "update": {
+      "name": "Updated Name"
+    }
+  },
+  "content": {
+    "create": {
+      "title": "Pythagoras Theorem",
+      "description": "Right triangle basics",
+      "subject": "maths",
+      "file_url": "",
+      "file_type": "video/mp4",
+      "file_size": 12345,
+      "start_time": "2026-01-01T10:00:00.000Z",
+      "end_time": "2026-01-01T10:30:00.000Z",
+      "status": "pending"
+    },
+    "update": {
+      "status": "approved"
+    }
+  },
+  "content_slots": {
+    "create": {
+      "subject": "maths"
+    },
+    "update": {
+      "subject": "science"
+    }
+  },
+  "content_schedule": {
+    "create": {
+      "content_id": 1,
+      "slot_id": 1,
+      "rotation_order": 0,
+      "duration": 15
+    },
+    "update": {
+      "duration": 20
+    }
+  },
+  "approval": {
+    "approve": {},
+    "reject": {
+      "reason": "Not aligned with syllabus"
+    }
+  }
+}
