@@ -22,6 +22,7 @@ async function login(req, res) {
     }
     const token = jwtService.signAccessToken({
       userId: user.id,
+      name: user.name,
       email: user.email,
       role_id: user.role_id,
     });
@@ -63,15 +64,13 @@ async function forgotPassword(req, res) {
 
 async function resetPassword(req, res) {
   try {
-    let decoded;
-    try {
-      decoded = jwtService.verifyPasswordResetToken(req.body.resetToken);
-    } catch {
-      return res.status(400).json({ message: "Invalid or expired reset token" });
+    const userId = req.user?.userId || req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
     }
-    const user = await User.findByPk(decoded.sub);
+    const user = await User.findByPk(userId);
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired reset token" });
+      return res.status(401).json({ message: "User not found" });
     }
     const hashed = await hashPassword(req.body.newPassword);
     await user.update({ password: hashed });

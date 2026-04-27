@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/login", validate("body", loginBodySchema), controller.login);
 router.post("/forgotPassword", validate("body", forgotPasswordBodySchema), controller.forgotPassword);
-router.post("/resetPassword", validate("body", resetPasswordBodySchema), controller.resetPassword);
+router.post("/resetPassword", auth, validate("body", resetPasswordBodySchema), controller.resetPassword);
 router.post("/changePassword", auth, validate("body", changePasswordBodySchema), controller.changePassword);
 
 

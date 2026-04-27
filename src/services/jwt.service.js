@@ -9,12 +9,13 @@ function getSecret() {
 }
 
 /**
- * @param {{ userId: number, email: string, role_id: number }} payload
+ * @param {{ userId: number, email: string, role_id: number, name?: string }} payload
  */
 function signAccessToken(payload) {
   return jwt.sign(
     {
       sub: payload.userId,
+      name: payload.name,
       email: payload.email,
       role_id: payload.role_id,
       typ: "access",
