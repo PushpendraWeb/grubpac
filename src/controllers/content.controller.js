@@ -3,6 +3,7 @@ const { CONTENT_STATUS } = Content;
 const User = require("../models/user.model");
 const ContentSchedule = require("../models/content_schedule.model");
 const ContentSlot = require("../models/content_slots.model");
+const { sequelize } = require("../config/dbConnection");
 
 const userInclude = [
   { model: User, as: "creator", attributes: ["id", "name", "email"], required: false },
@@ -237,7 +238,19 @@ async function getById(req, res) {
 
 async function getAll(req, res) {
   try {
+    const rawStatus = req.query.status;
+    const status =
+      rawStatus !== undefined && rawStatus !== null ? String(rawStatus).trim().toLowerCase() : null;
+    const where =
+      !status || status === "all"
+        ? undefined
+        : {
+            // DB may contain mixed-case values depending on legacy updates.
+            status: String(status).toLowerCase(),
+          };
+
     const rows = await Content.findAll({
+      ...(where ? { where: sequelize.where(sequelize.fn("LOWER", sequelize.col("status")), where.status) } : {}),
       include: userInclude,
       order: [["id", "ASC"]],
     });
