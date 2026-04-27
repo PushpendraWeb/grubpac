@@ -3,7 +3,7 @@ require("dotenv").config({
   path: path.join(__dirname, "..", "..", "config.env"),
 });
 
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 /** @type {'sequelize' | string} */
 const ORM_TYPE = (process.env.DB_ORM || "sequelize").toLowerCase();
@@ -29,6 +29,29 @@ async function connectDB() {
   }
   await sequelize.authenticate();
   console.log("MySQL connected");
+
+  // If the DB schema was created with the wrong type for `content.subject` (INT),
+  // Sequelize inserts will fail when we send string subjects like "maths".
+  // We auto-heal this column on startup for dev environments.
+  try {
+    const qi = sequelize.getQueryInterface();
+    const table = await qi.describeTable("content");
+    const subject = table?.subject;
+    const subjectType = subject?.type ? String(subject.type).toLowerCase() : "";
+    const looksInteger =
+      subjectType.includes("int") || subjectType.includes("integer") || subjectType.includes("bigint");
+    const looksEnum = subjectType.includes("enum(");
+    if (looksInteger || looksEnum) {
+      await qi.changeColumn("content", "subject", {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+      });
+      console.log("Auto-migrated `content.subject` to VARCHAR");
+    }
+  } catch (err) {
+    // Don't block server start if introspection/migration fails.
+    console.warn("Skipped auto-migration for `content.subject`:", err.message || err);
+  }
 }
 
 module.exports = {

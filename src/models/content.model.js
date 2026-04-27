@@ -2,8 +2,6 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const User = require("./user.model");
 
-const SUBJECTS = ["maths", "science", "english", "hindi"];
-
 const CONTENT_STATUS = {
   PENDING: "pending",
   APPROVED: "approved",
@@ -27,7 +25,7 @@ const Content = sequelize.define(
       allowNull: true,
     },
     subject: {
-      type: DataTypes.ENUM(...SUBJECTS),
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     file_url: {
@@ -105,5 +103,4 @@ Content.belongsTo(User, { foreignKey: "uploaded_by", as: "uploader" });
 Content.belongsTo(User, { foreignKey: "approved_by", as: "approver" });
 
 module.exports = Content;
-module.exports.CONTENT_SUBJECTS = SUBJECTS;
 module.exports.CONTENT_STATUS = CONTENT_STATUS;

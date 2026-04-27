@@ -1,6 +1,5 @@
 const Joi = require("joi");
 
-const subjectValues = ["maths", "science", "english", "hindi"];
 const contentStatusValues = ["pending", "approved", "rejected"];
 
 const idParamSchema = Joi.object({
@@ -10,9 +9,7 @@ const idParamSchema = Joi.object({
 const createBodySchema = Joi.object({
   title: Joi.string().trim().max(100).allow(null, "").optional(),
   description: Joi.string().allow("").optional(),
-  subject: Joi.string()
-    .valid(...subjectValues)
-    .required(),
+  subject: Joi.string().trim().min(1).max(100).required(),
   file_url: Joi.string().allow(null, "").optional(),
   file_type: Joi.string().trim().max(45).allow(null, "").optional(),
   file_size: Joi.number().optional(),
@@ -26,9 +23,7 @@ const createBodySchema = Joi.object({
 const updateBodySchema = Joi.object({
   title: Joi.string().trim().max(100).allow(null, "").optional(),
   description: Joi.string().allow("").optional(),
-  subject: Joi.string()
-    .valid(...subjectValues)
-    .optional(),
+  subject: Joi.string().trim().min(1).max(100).optional(),
   file_url: Joi.string().allow(null, "").optional(),
   file_type: Joi.string().trim().max(45).allow(null, "").optional(),
   file_size: Joi.number().optional(),
