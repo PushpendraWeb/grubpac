@@ -19,6 +19,28 @@
       "item": [
         {
           "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login returns token', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('token');",
+                  "});",
+                  "",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) {",
+                  "    pm.environment.set('auth', json.token);",
+                  "  }",
+                  "} catch (e) {}"
+                ]
+              }
+            }
+          ],
           "request": {
             "auth": { "type": "noauth" },
             "method": "POST",
