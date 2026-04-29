@@ -21,6 +21,19 @@ const sequelize = new Sequelize(
   }
 );
 
+let modelsInitialized = false;
+
+function initModels() {
+  if (modelsInitialized) return;
+  // Register all Sequelize models before sync.
+  require("../models/role.model");
+  require("../models/user.model");
+  require("../models/content.model");
+  require("../models/content_slots.model");
+  require("../models/content_schedule.model");
+  modelsInitialized = true;
+}
+
 async function connectDB() {
   if (ORM_TYPE !== "sequelize") {
     console.warn(
@@ -29,6 +42,9 @@ async function connectDB() {
   }
   await sequelize.authenticate();
   console.log("MySQL connected");
+  initModels();
+  await sequelize.sync();
+  console.log("MySQL tables verified (created if missing)");
 
   // If the DB schema was created with the wrong type for `content.subject` (INT),
   // Sequelize inserts will fail when we send string subjects like "maths".

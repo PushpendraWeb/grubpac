@@ -1,0 +1,15 @@
+git
+
+https://github.com/PushpendraWeb/grubpac.git
+
+vercel
+https://grubpac.vercel.app/
+
+
+host : mysql-2a971481-movpankaj3-5762.c.aivencloud.com
+port: 22264
+username - avnadmin
+password - AVNS_5POciBkHwiV6dQibREB
+db - defaultdb
+
+mysql --user avnadmin --password=AVNS_5POciBkHwiV6dQibREB --host mysql-2a971481-movpankaj3-5762.c.aivencloud.com --port 22264 defaultdb

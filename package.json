@@ -25,6 +25,8 @@
     "multer-s3": "^3.0.1",
     "mysql2": "^3.22.2",
     "nodemon": "^3.1.14",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

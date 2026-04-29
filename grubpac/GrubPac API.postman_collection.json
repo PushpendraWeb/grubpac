@@ -1,0 +1,1095 @@
+{
+  "info": {
+    "_postman_id": "7daee628-8027-4c29-8a3f-1f1a0a2d83aa",
+    "name": "GrubPac API",
+    "description": "Base URL: {{grubpac}}\nAuth: Bearer {{auth}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8658824"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login returns token', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('token');",
+                  "});",
+                  "",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) {",
+                  "    pm.environment.set('auth', json.token);",
+                  "  }",
+                  "} catch (e) {}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"principal@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/auth/login",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/auth/forgotPassword",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgotPassword"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password (Bearer required)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJUZWFjaGVyIFVzZXIiLCJlbWFpbCI6InRlYWNoZXJAZXhhbXBsZS5jb20iLCJyb2xlX2lkIjoyLCJ0eXAiOiJhY2Nlc3MiLCJpYXQiOjE3NzcyODYwNzMsImV4cCI6MTc3Nzg5MDg3M30.QLeV9rFGBJ81zkDITsBcGM-nZ8ZMMUBEqnL3P5034BA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"newPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/auth/resetPassword",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "resetPassword"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password (Bearer required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"password123\",\n  \"newPassword\": \"newPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/auth/changePassword",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "changePassword"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/users/getAll",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "getAll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/users/getById/1",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "getById",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test.user@example.com\",\n  \"password\": \"password123\",\n  \"role_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/users/create",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/users/update/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/users/delete/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/roles/getAll",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "getAll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/roles/getById/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "getById",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role_name\": \"teacher\",\n  \"status\": 1\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/roles/create",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": 1\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/roles/update/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/roles/delete/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content/getAll?status=pending",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "getAll"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "all,pending,approved,reject"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Live By Teacher (Public)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content/live/:teacherId?subject=maths",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "live",
+                ":teacherId"
+              ],
+              "query": [
+                {
+                  "key": "subject",
+                  "value": "maths"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "teacherId",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id (Bearer required)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content/getById/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "getById",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create (Bearer required)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJUZWFjaGVyIFVzZXIiLCJlbWFpbCI6InRlYWNoZXJAZXhhbXBsZS5jb20iLCJyb2xlX2lkIjoyLCJ0eXAiOiJhY2Nlc3MiLCJpYXQiOjE3NzcyODYwNzMsImV4cCI6MTc3Nzg5MDg3M30.QLeV9rFGBJ81zkDITsBcGM-nZ8ZMMUBEqnL3P5034BA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Pythagoras Theorem\",\n  \"description\": \"Right triangle basics\",\n  \"subject\": \"English\",\n  \"file_url\": \"http://xyz.com/defult.jpg\",\n  \"file_type\": \"JPG\",\n  \"file_size\": 10,\n  \"start_time\": \"2026-01-01T10:00:00.000Z\",\n  \"end_time\": \"2026-01-01T10:30:00.000Z\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content/create",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update (Bearer required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content/update/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete (Bearer required)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content/delete/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Content Slots",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_slots/getAll",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_slots",
+                "getAll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id (Bearer required)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_slots/getById/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_slots",
+                "getById",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create (Bearer required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"English\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content_slots/create",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_slots",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update (Bearer required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"science\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content_slots/update/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_slots",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete (Bearer required)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_slots/delete/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_slots",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Content Schedule",
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_schedule/getAll",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_schedule",
+                "getAll"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id (Bearer required)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_schedule/getById/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_schedule",
+                "getById",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create (Bearer required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content_id\": 1,\n  \"slot_id\": 1,\n  \"rotation_order\": 1,\n  \"duration\": 30\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content_schedule/create",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_schedule",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update (Bearer required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"duration\": 20\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/content_schedule/update/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_schedule",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete (Bearer required)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/content_schedule/delete/:id",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "content_schedule",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Approval (principal only)",
+      "item": [
+        {
+          "name": "List Pending/All Content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grubpac}}/api/approval/content",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "approval",
+                "content"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Content",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/approval/content/1/approve",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "approval",
+                "content",
+                "1",
+                "approve"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Content",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Not aligned with syllabus\"\n}"
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/approval/content/:id/reject",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "approval",
+                "content",
+                ":id",
+                "reject"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "File Uploader",
+      "item": [
+        {
+          "name": "Upload Single (multipart/form-data, Bearer required)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [
+                    "",
+                    "/C:/Users/neeti singh/Downloads/Content Broadcasting System - Technical Assignment – Backend Developer.pdf"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{grubpac}}/api/file_uploader/upload",
+              "host": [
+                "{{grubpac}}"
+              ],
+              "path": [
+                "api",
+                "file_uploader",
+                "upload"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "grubpac",
+      "value": "http://localhost:2000"
+    },
+    {
+      "key": "auth",
+      "value": ""
+    }
+  ]
+}

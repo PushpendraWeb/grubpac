@@ -1,0 +1,228 @@
+GrubPac API Documentation (Text)
+================================
+
+How to run
+----------
+1) Install dependencies:
+   npm install
+
+2) Start server (dev):
+   npm run dev
+
+3) Base URL (local):
+   http://localhost:2000 (local), 
+   https://grubpac.vercel.app (live)
+
+Base API prefix
+---------------
+/api
+
+Authentication
+--------------
+Most protected APIs require:
+  Authorization: Bearer <access_token>
+
+Login returns { token, user }.
+Use that token in Authorization header for protected APIs.
+
+
+AUTH APIs
+---------
+POST /api/auth/login
+Body (JSON):
+  {
+    "email": "user@example.com",
+    "password": "your_password"
+  }
+Response:
+  { "token": "<jwt>", "user": { ... } }
+
+POST /api/auth/forgotPassword
+Body (JSON):
+  { "email": "user@example.com" }
+Response:
+  { "message": "...", "resetToken": "<token>" }  (resetToken appears only if JWT_RESET_TOKEN_IN_RESPONSE=true)
+
+POST /api/auth/resetPassword
+Auth:
+  Authorization: Bearer <access_token>
+Body (JSON):
+  { "newPassword": "new_password_min_8_chars" }
+Response:
+  { "message": "Password has been reset" }
+
+POST /api/auth/changePassword
+Auth:
+  Authorization: Bearer <access_token>
+Body (JSON):
+  {
+    "oldPassword": "old_password",
+    "newPassword": "new_password_min_8_chars"
+  }
+
+
+ROLES APIs
+----------
+GET  /api/roles/getAll
+GET  /api/roles/getById/:id
+POST /api/roles/create
+Body (JSON):
+  { "role_name": "principal", "status": 1 }
+
+PUT /api/roles/update/:id
+Body (JSON):
+  { "role_name": "principal", "status": 1 }
+
+DELETE /api/roles/delete/:id
+
+
+USERS APIs
+----------
+GET  /api/users/getAll
+GET  /api/users/getById/:id
+POST /api/users/create
+Body (JSON):
+  {
+    "name": "User Name",
+    "email": "user@example.com",
+    "password": "password",
+    "role_id": 1
+  }
+
+PUT /api/users/update/:id
+Body (JSON): (any fields optional)
+  {
+    "name": "Updated Name",
+    "email": "updated@example.com",
+    "password": "new_password",
+    "role_id": 2
+  }
+
+DELETE /api/users/delete/:id
+
+
+CONTENT APIs
+------------
+GET /api/content/getAll
+Query:
+  status=all | pending | approved | rejected
+Examples:
+  /api/content/getAll?status=approved
+  /api/content/getAll?status=pending
+  /api/content/getAll?status=all
+
+GET /api/content/getById/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+POST /api/content/create
+Auth:
+  Authorization: Bearer <access_token>
+Body (JSON):
+  {
+    "title": "Pythagoras Theorem",
+    "description": "Right triangle basics",
+    "subject": "maths",
+    "file_url": "http://xyz.com/default.jpg",
+    "file_type": "JPG",
+    "file_size": 10,
+    "start_time": "2026-01-01T10:00:00.000Z",
+    "end_time": "2026-01-01T10:30:00.000Z",
+    "status": "pending"
+  }
+
+PUT /api/content/update/:id
+Auth:
+  Authorization: Bearer <access_token>
+Body (JSON): (any fields optional)
+  {
+    "title": "Updated",
+    "subject": "maths",
+    "status": "approved"
+  }
+
+DELETE /api/content/delete/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+GET /api/content/live/:teacherId
+GET /api/content/live/teacher-:teacherId
+Query:
+  subject=<any string>
+
+
+CONTENT SLOTS APIs
+------------------
+GET  /api/content_slots/getAll
+GET  /api/content_slots/getById/:id
+POST /api/content_slots/create
+Auth:
+  Authorization: Bearer <access_token>
+Body (JSON):
+  { "subject": "maths" }
+
+PUT /api/content_slots/update/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+DELETE /api/content_slots/delete/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+
+CONTENT SCHEDULE APIs
+---------------------
+GET  /api/content_schedule/getAll
+GET  /api/content_schedule/getById/:id
+POST /api/content_schedule/create
+Auth:
+  Authorization: Bearer <access_token>
+
+PUT /api/content_schedule/update/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+DELETE /api/content_schedule/delete/:id
+Auth:
+  Authorization: Bearer <access_token>
+
+
+APPROVAL APIs
+-------------
+GET /api/approval/content
+Auth:
+  Authorization: Bearer <access_token>
+Role:
+  principal (RBAC)
+
+PATCH /api/approval/content/:id/approve
+Auth:
+  Authorization: Bearer <access_token>
+Role:
+  principal (RBAC)
+Body (JSON):
+  { "approved_at": "2026-01-01T10:00:00.000Z" }  (if required by validator)
+
+PATCH /api/approval/content/:id/reject
+Auth:
+  Authorization: Bearer <access_token>
+Role:
+  principal (RBAC)
+Body (JSON):
+  { "rejection_reason": "reason" }  (if required by validator)
+
+
+FILE UPLOADER APIs
+------------------
+POST /api/file_uploader/upload
+Form-data:
+  key: file (type: File)
+Response:
+  {
+    "fileName": "...",
+    "file_url": "...",
+    "file_path": "...",
+    "file_type": "...",
+    "file_size": 123
+  }
+
